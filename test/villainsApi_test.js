@@ -12,8 +12,7 @@ chai.use(chaihttp);
 var expect = chai.expect;
 var testToken;
 
-describe('villains api', function() {
-  
+describe('villains api endpoints', function() {
   after(function(done) {
     mongoose.connection.db.dropDatabase(function() {
       done();
@@ -26,19 +25,9 @@ describe('villains api', function() {
       .send({email: 'test@test', password: 'test'})
       .end(function(err, res) {
         expect(err).to.eql(null);
+        testToken = res.body.token;
         done();
       });
-  });
-
-  before(function(done) {
-    chai.request('localhost:3000/api/v1')
-    .post('/sign_in')
-    .send('-u test@test:test')
-    .end(function(err,res) {
-      expect(err).to.eql(null);
-      testToken = res.body.eat;
-      done();
-    });
   });
 
   it('should respond to post', function(done) {
@@ -68,6 +57,7 @@ describe('villains api', function() {
 
   describe('has info in db', function() {
     var id;
+
     beforeEach(function(done) {
       chai.request('localhost:3000/api/v1')
       .post('/villains')
@@ -80,8 +70,8 @@ describe('villains api', function() {
   
     it('should have an index', function(done) {
       chai.request('localhost:3000/api/v1')
-      .get('/villains')
-      .send(testToken)
+      .get('/villains/')
+      .send({eat:testToken})
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect(Array.isArray(res.body)).to.eql(true);
@@ -105,7 +95,7 @@ describe('villains api', function() {
     it('should delete a villain', function(done) {
       chai.request('localhost:3000/api/v1')
       .delete('/villains/' + id)
-      .send(testToken)
+      .send({eat:testToken})
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect((res.body)[0]._id).to.eql(id);
