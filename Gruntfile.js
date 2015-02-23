@@ -27,7 +27,7 @@ module.exports = function(grunt) {
           'preset':'google'
         },
         files: {
-          src: ['Gruntfile.js', 'test/villainsApi_test.js', 'server.js', 'models/SuperVillain.js', 'routes/villains_routes.js']
+          src: ['Gruntfile.js', 'test/villainsApi_test.js', 'server.js', 'models/SuperVillain.js', 'routes/villains_routes.js', 'models/User.js']
         }
       }
     }
